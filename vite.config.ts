@@ -4,6 +4,10 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    minify: true,
+    sourcemap: true,
+  },
   resolve: {
     alias: {
       '~': path.resolve(__dirname, './src'),
