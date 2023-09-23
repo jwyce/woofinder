@@ -35,9 +35,9 @@ export function Header() {
           <ThemeToggle />
           {user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger name='profile'>
                 <Avatar>
-                  <AvatarImage src={user.avatar} />
+                  <AvatarImage src={user.avatar} alt='avatar' />
                   <AvatarFallback>
                     {first[0]}
                     {last[0]}

@@ -43,7 +43,7 @@ export function Match() {
       <Layout className="min-h-0">
         <div className="flex h-[80vh] flex-col items-center justify-center space-y-4">
           <div className="flex items-center space-x-2">
-            <img src={noMatch} className="h-24 w-24 md:h-[10rem] md:w-[10rem]" />
+            <img src={noMatch} alt="no match" className="h-24 w-24 md:h-[10rem] md:w-[10rem]" />
           </div>
           <p className="text-sm text-muted-foreground">
             You haven't favorited any dogs yet! Find a few you like and come back.
@@ -65,7 +65,7 @@ export function Match() {
     <Layout className="min-h-0">
       <div className="flex h-[80vh] flex-col items-center justify-center space-y-4">
         <div className="flex items-center space-x-2">
-          <img src={matchFound} className="h-24 w-24 md:h-[10rem] md:w-[10rem]" />
+          <img src={matchFound} alt='match found' className="h-24 w-24 md:h-[10rem] md:w-[10rem]" />
         </div>
         <p className="text-2xl font-bold">We found a match!</p>
         <DogProfile {...matchedDog[0]} />

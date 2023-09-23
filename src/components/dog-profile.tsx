@@ -16,6 +16,7 @@ export function DogProfile(dog: Dog) {
         <img
           src={dog.img}
           className="h-72 w-72 select-none rounded-lg object-cover md:h-96 md:w-96 "
+          alt={dog.name}
         />
         <Heart
           className={cn(
