@@ -10,7 +10,7 @@ export function DogProfile(dog: Dog) {
   const removeFavorite = useWoofinderStore((s) => s.removeFavorite);
 
   return (
-    <div key={dog.id} className="flex justify-center">
+    <div className="flex justify-center">
       <div className="relative w-72 text-white drop-shadow-md md:w-96">
         <div className="absolute left-0 top-0 h-72 w-full rounded-lg bg-gradient-to-b from-transparent to-black opacity-90 md:h-96"></div>
         <img
@@ -23,6 +23,7 @@ export function DogProfile(dog: Dog) {
             { 'fill-pink-600 text-pink-600': favorites.includes(dog.id) },
           )}
           onClick={() => {
+            // invalidate cached queries
             if (favorites.includes(dog.id)) {
               removeFavorite(dog.id);
             } else {

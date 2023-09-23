@@ -213,4 +213,12 @@ const api = makeApi([
   locations,
   searchLocations,
 ]);
-export const fetchApi = new Zodios(URL, api, { axiosConfig: { withCredentials: true } });
+export const fetchApi = new Zodios(URL, api, {
+  axiosConfig: {
+    withCredentials: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    },
+  },
+});
