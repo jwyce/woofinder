@@ -52,7 +52,7 @@ proceeding. The following instructions assume you are on Linux, macOS, or WSL.
 
 ### Run Development Server
 
-1. Clone the repository: `git clone https://github.com/jwyce/woofinder.git`
+1. Clone the repository: `git clone https://github.com/jwyce/woofinder`
 2. Navigate to the project directory: `cd woofinder`
 3. Install dependencies: `pnpm i`
 4. Run the web app: `pnpm dev`
