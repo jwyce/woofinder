@@ -8,8 +8,8 @@
   client-side rendering alternative. Although other frameworks have a lot to offer (shout-out Svelte
   and Solid) I'm most comfortable using React.
 - **Tailwind + shadcn** - Tailwind allows me to iterate on designs in code extremely rapidly and is
-  a great abstraction over CSS. Leveraging [shadcn](https://ui.shadcn.com/) components gives a good
-  starting point for creating a design system.
+  a great abstraction over CSS. Leveraging [shadcn](https://ui.shadcn.com/) components also gives a
+  good starting point for creating a design system.
 - **React Router** - Currently the best way to manage client side routing so links in-app can be
   shared and saved. I considered trying [Tanstack Router](https://tanstack.com/router/v1), but since
   it's still in beta, I decided against it.
@@ -17,7 +17,7 @@
   API.
 - **Zustand** - So I can manage global application state. Redux would be overkill for this project
   and Context would have been more code. Also enabled me to persist and sync state with different
-  storage options - see callout below.
+  storage options.
 - **React Hook Form** - For managing form state on the sign-in and search filter forms.
 - **Zodios + Zod** - To create a type-safe client SDK for the service and have the contract
   validated at **runtime**.
@@ -32,8 +32,8 @@
   allow tracking from your device's settings.
 - **Note on persisting global state** - Essentially, I wanted to have some level of persistance when
   a user is signed in so if they refresh, close the tab, internet turns off, or for any other number
-  of reasons, application state is perserved. I chose to sync the global state store with
-  localstorage to achieve this effect. If I had my own server or another service, I think a better
+  of reasons, application state is preserved. I chose to synchronize the global state store with
+  localStorage to achieve this effect. If I had my own server or another service, I think a better
   route would be to sync it with a database.
 
 ## Credits
