@@ -38,7 +38,7 @@ export function Header() {
               <DropdownMenuTrigger name="profile">
                 <Avatar>
                   <AvatarImage src={user.avatar} alt="avatar" />
-                  <AvatarFallback className='uppercase'>
+                  <AvatarFallback className="uppercase">
                     {first[0]}
                     {last ? last[0] : null}
                   </AvatarFallback>
