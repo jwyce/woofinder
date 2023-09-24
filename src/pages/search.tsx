@@ -280,7 +280,7 @@ export function Search() {
               <div className="flex items-center space-x-2">
                 <img src={noMatch} alt="no match" className="h-24 w-24 md:h-[10rem] md:w-[10rem]" />
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-center text-sm text-muted-foreground">
                 No dogs matched your search criteria. Try widening your search.
               </p>
             </div>

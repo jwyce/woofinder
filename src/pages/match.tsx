@@ -51,7 +51,7 @@ export function Match() {
           <div className="flex items-center space-x-2">
             <img src={noMatch} alt="no match" className="h-24 w-24 md:h-[10rem] md:w-[10rem]" />
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-center text-sm text-muted-foreground">
             You haven't favorited any dogs yet! Find a few you like and come back.
           </p>
           <Button onClick={() => navigate('/search')}>Search dogs</Button>
