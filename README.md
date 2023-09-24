@@ -3,10 +3,10 @@
 ## Tech Stack and Decisions
 
 - **TypeScript** - TypeScript enables me to move faster and make less mistakes.
-- **Vite + React** - Since I don't own the server and the project is relatively small I chose to
+- **Vite + React** - Since I don't own the server and the project is relatively small, I chose to
   forgo a server rendering framework (like Next.js) and instead use vite for fast, light-weight
-  client-side rendering. Although other frameworks have a lot to offer (shout-out Svelte and Solid)
-  I'm most comfortable using React.
+  client-side rendering alternative. Although other frameworks have a lot to offer (shout-out Svelte
+  and Solid) I'm most comfortable using React.
 - **Tailwind + shadcn** - Tailwind allows me to iterate on designs in code extremely rapidly and is
   a great abstraction over CSS. Leveraging [shadcn](https://ui.shadcn.com/) components gives a good
   starting point for creating a design system.
