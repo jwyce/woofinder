@@ -11,14 +11,16 @@ const dogSchema = z.object({
 });
 export type Dog = z.infer<typeof dogSchema>;
 
-const locationSchema = z.object({
-  zip_code: z.string(),
-  latitude: z.string(),
-  longitude: z.string(),
-  city: z.string(),
-  state: z.string(),
-  country: z.string(),
-});
+const locationSchema = z
+  .object({
+    zip_code: z.string(),
+    latitude: z.number(),
+    longitude: z.number(),
+    city: z.string(),
+    state: z.string(),
+    country: z.string().optional(),
+  })
+  .nullable();
 export type Location = z.infer<typeof locationSchema>;
 
 const coordinateSchema = z.object({
@@ -154,50 +156,34 @@ const locations = makeEndpoint({
 
 const locationSearchParams = makeParameters([
   {
-    name: 'city',
+    name: 'body',
+    type: 'Body',
     description: 'the full or partial name of a city',
-    type: 'Query',
-    schema: z.string().optional(),
-  },
-  {
-    name: 'city',
-    description: 'an array of two-letter state/territory abbreviations',
-    type: 'Query',
-    schema: z.array(z.string()).optional(),
-  },
-  {
-    name: 'geoBoundingBox',
-    description: 'an object defining a geographic bounding box',
-    type: 'Query',
     schema: z.object({
-      top: coordinateSchema.optional(),
-      left: coordinateSchema.optional(),
-      bottom: coordinateSchema.optional(),
-      right: coordinateSchema.optional(),
-      bottom_left: coordinateSchema.optional(),
-      top_left: coordinateSchema.optional(),
-      bottom_right: coordinateSchema.optional(),
-      top_right: coordinateSchema.optional(),
+      city: z.string().optional(),
+      states: z.array(z.string()).optional(),
+      geoBoundingBox: z
+        .object({
+          top: coordinateSchema.optional(),
+          left: coordinateSchema.optional(),
+          bottom: coordinateSchema.optional(),
+          right: coordinateSchema.optional(),
+          bottom_left: coordinateSchema.optional(),
+          top_left: coordinateSchema.optional(),
+          bottom_right: coordinateSchema.optional(),
+          top_right: coordinateSchema.optional(),
+        })
+        .optional(),
+      size: z.number().optional(),
+      from: z.string().optional(),
     }),
-  },
-  {
-    name: 'size',
-    description: 'the number of results to return; defaults to 25 if omitted',
-    type: 'Query',
-    schema: z.number().optional(),
-  },
-  {
-    name: 'from',
-    description: 'a cursor to be used when paginating results (optional)',
-    type: 'Query',
-    schema: z.string().optional(),
   },
 ]);
 
 const searchLocations = makeEndpoint({
   method: 'post',
   path: '/locations/search',
-  response: z.array(locationSchema),
+  response: z.object({ results: z.array(locationSchema), total: z.number() }),
   parameters: locationSearchParams,
   alias: 'searchLocations',
   description: 'Returns an array of Location objects',
@@ -216,9 +202,5 @@ const api = makeApi([
 export const fetchApi = new Zodios(URL, api, {
   axiosConfig: {
     withCredentials: true,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
-    },
   },
 });

@@ -1,13 +1,22 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { Heart, MapPin } from 'lucide-react';
 
-import { Dog } from '~/lib/fetch-client';
+import { Dog, Location } from '~/lib/fetch-client';
 import { useWoofinderStore } from '~/lib/store';
 import { cn } from '~/lib/utils';
 
-export function DogProfile(dog: Dog) {
+type Props = {
+  dog: Dog;
+  locations?: Location[];
+};
+
+export function DogProfile({ dog, locations }: Props) {
   const favorites = useWoofinderStore((s) => s.favorites);
   const addFavorite = useWoofinderStore((s) => s.addFavorite);
   const removeFavorite = useWoofinderStore((s) => s.removeFavorite);
+  const queryClient = useQueryClient();
+
+  const loc = locations?.find((x) => x && x.zip_code === dog.zip_code);
 
   return (
     <div className="flex justify-center">
@@ -24,12 +33,15 @@ export function DogProfile(dog: Dog) {
             { 'fill-pink-600 text-pink-600': favorites.includes(dog.id) },
           )}
           onClick={() => {
-            // invalidate cached queries
             if (favorites.includes(dog.id)) {
               removeFavorite(dog.id);
             } else {
               addFavorite(dog.id);
             }
+
+            // invalidate cached queries
+            queryClient.invalidateQueries(['match']);
+            queryClient.invalidateQueries(['matchedDog']);
           }}
         />
         <div className="absolute bottom-12 left-2 flex items-end space-x-2 text-3xl font-bold">
@@ -37,9 +49,9 @@ export function DogProfile(dog: Dog) {
           <div className="text-2xl font-light">{dog.age}</div>
         </div>
         <div className="absolute bottom-6 left-2">{dog.breed}</div>
-        <div className="absolute bottom-1 left-2 flex items-center space-x-1">
+        <div className="absolute bottom-1 left-2 flex items-center space-x-1 text-sm md:text-lg">
           <MapPin className="h-4 w-4" />
-          <span>{dog.zip_code}</span>
+          <span>{loc ? `${loc.city}, ${loc.state}` : dog.zip_code}</span>
         </div>
       </div>
     </div>

@@ -16,18 +16,25 @@ type SelectOption = {
 };
 
 type Props = {
-  fieldValue?: SelectOption[];
+  fieldValue?: (string | null)[];
   options: SelectOption[];
   placeholder?: string;
   className?: string;
-  onSelect?: (option: SelectOption) => void;
+  onSelect: (option: SelectOption[]) => void;
 };
 
-export function MultiSelect({ options, placeholder, className }: Props) {
+export function MultiSelect({ options, placeholder, className, fieldValue, onSelect }: Props) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<SelectOption[]>([]);
+  const [selected, setSelected] = React.useState<SelectOption[]>(
+    options.filter((o) => fieldValue?.includes(o.value)),
+  );
   const [inputValue, setInputValue] = React.useState('');
+
+  React.useEffect(() => {
+    onSelect(selected);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
   const handleUnselect = React.useCallback((option: SelectOption) => {
     setSelected((prev) => prev.filter((s) => s.value !== option.value));
@@ -51,8 +58,6 @@ export function MultiSelect({ options, placeholder, className }: Props) {
       }
     }
   }, []);
-
-  // const selectables = options.filter((option) => !selected.includes(option));
 
   return (
     <Command onKeyDown={handleKeyDown} className={cn('overflow-visible bg-transparent', className)}>
@@ -110,7 +115,7 @@ export function MultiSelect({ options, placeholder, className }: Props) {
                       }}
                       onSelect={() => {
                         setInputValue('');
-                        if (selected.includes(option)) {
+                        if (selected.some((s) => s.value === option.value)) {
                           setSelected((prev) => prev.filter((s) => s.value !== option.value));
                         } else {
                           setSelected((prev) => [...prev, option]);
@@ -118,7 +123,7 @@ export function MultiSelect({ options, placeholder, className }: Props) {
                       }}
                       className={'cursor-pointer'}
                     >
-                      {selected.includes(option) ? (
+                      {selected.some((s) => s.value === option.value) ? (
                         <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
                           <CheckIcon className="h-4 w-4" />
                         </span>

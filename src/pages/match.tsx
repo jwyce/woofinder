@@ -21,15 +21,21 @@ export function Match() {
   const navigate = useNavigate();
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['match'],
+    queryKey: ['match', favorites],
     queryFn: () => fetchApi.findMatch(favorites),
     enabled: favorites.length > 0,
   });
 
-  const { data: matchedDog, refetch: refetchDog } = useQuery({
-    queryKey: ['matchedDog'],
+  const { data: matchedDog } = useQuery({
+    queryKey: ['matchedDog', data?.match],
     queryFn: () => fetchApi.getDogs(data ? [data.match] : []),
     enabled: !!data?.match,
+  });
+
+  const { data: loc } = useQuery({
+    queryKey: ['location', matchedDog],
+    queryFn: () => fetchApi.getLocations(matchedDog ? [matchedDog[0].zip_code] : []),
+    enabled: !!matchedDog,
   });
 
   useEffect(() => {
@@ -65,17 +71,16 @@ export function Match() {
     <Layout className="min-h-0">
       <div className="flex h-[80vh] flex-col items-center justify-center space-y-4">
         <div className="flex items-center space-x-2">
-          <img src={matchFound} alt='match found' className="h-24 w-24 md:h-[10rem] md:w-[10rem]" />
+          <img src={matchFound} alt="match found" className="h-24 w-24 md:h-[10rem] md:w-[10rem]" />
         </div>
         <p className="text-2xl font-bold">We found a match!</p>
-        <DogProfile {...matchedDog[0]} />
+        <DogProfile dog={matchedDog[0]} locations={loc} />
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
             className="transition duration-200 hover:border-pink-600 hover:bg-pink-600/10 hover:text-pink-600  lg:flex"
             onClick={async () => {
               await refetch();
-              await refetchDog();
             }}
           >
             <Heart className="mr-2 h-4 w-4" />

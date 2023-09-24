@@ -35,12 +35,12 @@ export function Header() {
           <ThemeToggle />
           {user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger name='profile'>
+              <DropdownMenuTrigger name="profile">
                 <Avatar>
-                  <AvatarImage src={user.avatar} alt='avatar' />
-                  <AvatarFallback>
+                  <AvatarImage src={user.avatar} alt="avatar" />
+                  <AvatarFallback className='uppercase'>
                     {first[0]}
-                    {last[0]}
+                    {last ? last[0] : null}
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
