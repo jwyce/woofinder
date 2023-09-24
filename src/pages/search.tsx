@@ -266,10 +266,12 @@ export function Search() {
         </Button>
       </div>
       {!dogs ? (
-        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {Array.from({ length: 24 }).map((_, idx) => (
-            <Skeleton key={idx} className="h-72 w-72 rounded-lg" />
-          ))}
+        <div className="flex items-center justify-center">
+          <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            {Array.from({ length: 24 }).map((_, idx) => (
+              <Skeleton key={idx} className="h-72 w-72 rounded-lg" />
+            ))}
+          </div>
         </div>
       ) : (
         <>
