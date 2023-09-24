@@ -7,9 +7,9 @@
   forgo a server rendering framework (like Next.js) and instead use vite for fast, light-weight
   client-side rendering alternative. Although other frameworks have a lot to offer (shout-out Svelte
   and Solid) I'm most comfortable using React.
-- **Tailwind + shadcn** - Tailwind allows me to iterate on designs in code extremely rapidly and is
-  a great abstraction over CSS. Leveraging [shadcn](https://ui.shadcn.com/) components also gives a
-  good starting point for creating a design system.
+- **Tailwind + shadcn** - Tailwind allows me to rapidly iterate on designs in code and is a great
+  abstraction over CSS. Leveraging [shadcn](https://ui.shadcn.com/) components also gives a good
+  starting point for creating a design system.
 - **React Router** - Currently the best way to manage client side routing so links in-app can be
   shared and saved. I considered trying [Tanstack Router](https://tanstack.com/router/v1), but since
   it's still in beta, I decided against it.
