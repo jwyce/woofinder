@@ -30,6 +30,7 @@ import { Layout } from '~/components/layout';
 import logo from '/woofinder.png';
 
 export function SignIn() {
+  document.title = 'Woofinder';
   useShouldBeAuthed(false);
   const setUser = useWoofinderStore((state) => state.setUser);
   const navigate = useNavigate();
