@@ -103,7 +103,7 @@ export function MultiSelect({ options, placeholder, className, fieldValue, onSel
       <div className="relative mt-2">
         {open ? (
           <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-            <ScrollArea className="max-h-72">
+            <ScrollArea className="h-72">
               <CommandGroup className="overflow-auto">
                 {options.map((option) => {
                   return (
