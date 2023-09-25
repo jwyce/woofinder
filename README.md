@@ -5,9 +5,9 @@
 - **TypeScript** - Types enable me to move faster and make less mistakes.
 - **Vite + React** - Since I don't own the server and the project is relatively small, I chose to
   forgo a server rendering framework (like Next.js) and instead use [Vite](https://vitejs.dev/) and
-  React to assemble the pieces for a home-made fast, light-weight, client-side rendering framework.
-  Although other rendering libraries have a lot to offer (shout-out Svelte and Solid) I'm most
-  comfortable using React.
+  React to assemble the pieces for a "home-made", fast, light-weight, client-side rendering
+  framework. Although other rendering libraries have a lot to offer (shout-out Svelte and Solid) I'm
+  most comfortable using React.
 - **Tailwind + shadcn** - Tailwind allows me to rapidly iterate on designs in code and is a great
   abstraction over CSS. Leveraging [shadcn](https://ui.shadcn.com/) components also gives a good
   starting point for creating a design system.
