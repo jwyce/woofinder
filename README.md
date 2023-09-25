@@ -2,7 +2,7 @@
 
 ## Tech Stack and Decisions
 
-- **TypeScript** - TypeScript enables me to move faster and make less mistakes.
+- **TypeScript** - Types enable me to move faster and make less mistakes.
 - **Vite + React** - Since I don't own the server and the project is relatively small, I chose to
   forgo a server rendering framework (like Next.js) and instead use [Vite](https://vitejs.dev/) for
   fast, light-weight client-side rendering alternative. Although other frameworks have a lot to
