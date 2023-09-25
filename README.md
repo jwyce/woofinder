@@ -4,23 +4,24 @@
 
 - **TypeScript** - Types enable me to move faster and make less mistakes.
 - **Vite + React** - Since I don't own the server and the project is relatively small, I chose to
-  forgo a server rendering framework (like Next.js) and instead use [Vite](https://vitejs.dev/) for
-  fast, light-weight client-side rendering alternative. Although other frameworks have a lot to
-  offer (shout-out Svelte and Solid) I'm most comfortable using React.
+  forgo a server rendering framework (like Next.js) and instead use [Vite](https://vitejs.dev/) and
+  React to assemble the pieces for a home-made fast, light-weight, client-side rendering framework.
+  Although other rendering libraries have a lot to offer (shout-out Svelte and Solid) I'm most
+  comfortable using React.
 - **Tailwind + shadcn** - Tailwind allows me to rapidly iterate on designs in code and is a great
   abstraction over CSS. Leveraging [shadcn](https://ui.shadcn.com/) components also gives a good
   starting point for creating a design system.
-- **React Router** - Currently the best way to manage client side routing so links in-app can be
-  shared and saved. I considered trying [Tanstack Router](https://tanstack.com/router/v1), but since
-  it's still in beta, I decided against it.
+- **React Router** - Currently the best way to manage client side routing so links can be shared and
+  saved. I considered trying [Tanstack Router](https://tanstack.com/router/v1), but since it's still
+  in beta, I decided against it.
 - **React Query** - Solution for managing local state, caching, and invalidation between client and
   API.
 - **Zustand** - So I can manage global application state. Redux would be overkill for this project
   and Context would have been more code. Also enabled me to persist and sync state with different
   storage options.
-- **React Hook Form** - For managing form state on the sign-in and search filter forms.
+- **React Hook Form** - For managing form state on the sign-in and search pages.
 - **Zodios + Zod** - To create a type-safe client SDK for the service and have the contract
-  validated at **runtime**.
+  validated at _**runtime**_.
 
 ## Callouts
 
