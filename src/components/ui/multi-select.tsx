@@ -103,36 +103,38 @@ export function MultiSelect({ options, placeholder, className, fieldValue, onSel
       <div className="relative mt-2">
         {open ? (
           <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-            <ScrollArea className="h-72">
-              <CommandGroup className="overflow-auto">
-                {options.map((option) => {
-                  return (
-                    <CommandItem
-                      key={option.value}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                      onSelect={() => {
-                        setInputValue('');
-                        if (selected.some((s) => s.value === option.value)) {
-                          setSelected((prev) => prev.filter((s) => s.value !== option.value));
-                        } else {
-                          setSelected((prev) => [...prev, option]);
-                        }
-                      }}
-                      className={'cursor-pointer'}
-                    >
-                      {selected.some((s) => s.value === option.value) ? (
-                        <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
-                          <CheckIcon className="h-4 w-4" />
-                        </span>
-                      ) : null}
-                      {option.label}
-                    </CommandItem>
-                  );
-                })}
-              </CommandGroup>
+            <ScrollArea>
+              <div className="max-h-72">
+                <CommandGroup className="overflow-auto">
+                  {options.map((option) => {
+                    return (
+                      <CommandItem
+                        key={option.value}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        onSelect={() => {
+                          setInputValue('');
+                          if (selected.some((s) => s.value === option.value)) {
+                            setSelected((prev) => prev.filter((s) => s.value !== option.value));
+                          } else {
+                            setSelected((prev) => [...prev, option]);
+                          }
+                        }}
+                        className={'cursor-pointer'}
+                      >
+                        {selected.some((s) => s.value === option.value) ? (
+                          <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
+                            <CheckIcon className="h-4 w-4" />
+                          </span>
+                        ) : null}
+                        {option.label}
+                      </CommandItem>
+                    );
+                  })}
+                </CommandGroup>
+              </div>
             </ScrollArea>
           </div>
         ) : null}
