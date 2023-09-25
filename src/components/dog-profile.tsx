@@ -49,9 +49,9 @@ export function DogProfile({ dog, locations }: Props) {
           <div className="text-2xl font-light">{dog.age}</div>
         </div>
         <div className="absolute bottom-6 left-2">{dog.breed}</div>
-        <div className="absolute bottom-1 left-2 flex items-center space-x-1 text-sm md:text-lg">
+        <div className="absolute bottom-1 left-2 flex items-center space-x-1 text-sm">
           <MapPin className="h-4 w-4" />
-          <span>{loc ? `${loc.city}, ${loc.state}` : dog.zip_code}</span>
+          <span>{loc ? `${loc.city}, ${loc.state} ${dog.zip_code}` : dog.zip_code}</span>
         </div>
       </div>
     </div>
