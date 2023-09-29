@@ -74,7 +74,8 @@ export function Search() {
   });
 
   const { data: dogIds } = useQuery({
-    queryKey: ['dogIds', searchParams],
+    queryKey: ['dogIds', JSON.stringify(searchParams)],
+    staleTime: 60 * 1000,
     queryFn: () =>
       fetchApi.searchDogs({
         queries: {
