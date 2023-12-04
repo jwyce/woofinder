@@ -27,7 +27,8 @@ export function DogProfile({ dog, locations }: Props) {
           className="h-72 w-72 select-none rounded-lg object-cover md:h-96 md:w-96 "
           alt={dog.name}
         />
-        <button
+
+        <Heart
           onClick={() => {
             if (favorites.includes(dog.id)) {
               removeFavorite(dog.id);
@@ -39,14 +40,13 @@ export function DogProfile({ dog, locations }: Props) {
             queryClient.invalidateQueries(['match']);
             queryClient.invalidateQueries(['matchedDog']);
           }}
+          className={cn(
+            'absolute bottom-2 right-2 h-8 w-8 cursor-pointer text-pink-500 transition duration-200 hover:scale-105 hover:text-pink-600 active:fill-pink-600',
+            { 'fill-pink-600 text-pink-600': favorites.includes(dog.id) },
+          )}
         >
-          <Heart
-            className={cn(
-              'absolute bottom-2 right-2 h-8 w-8 cursor-pointer text-pink-500 transition duration-200 hover:scale-105 hover:text-pink-600 active:fill-pink-600',
-              { 'fill-pink-600 text-pink-600': favorites.includes(dog.id) },
-            )}
-          />
-        </button>
+          <span className="sr-only">Favorite</span>
+        </Heart>
         <div className="absolute bottom-12 left-2 flex items-end space-x-2 text-3xl font-bold">
           <div>{dog.name}</div>
           <div className="text-2xl font-light">{dog.age}</div>
