@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { Heart, MapPin } from 'lucide-react';
 
 import { Dog, Location } from '~/lib/fetch-client';
@@ -14,7 +13,6 @@ export function DogProfile({ dog, locations }: Props) {
   const favorites = useWoofinderStore((s) => s.favorites);
   const addFavorite = useWoofinderStore((s) => s.addFavorite);
   const removeFavorite = useWoofinderStore((s) => s.removeFavorite);
-  const queryClient = useQueryClient();
 
   const loc = locations?.find((x) => x && x.zip_code === dog.zip_code);
 
@@ -35,10 +33,6 @@ export function DogProfile({ dog, locations }: Props) {
             } else {
               addFavorite(dog.id);
             }
-
-            // invalidate cached queries
-            queryClient.invalidateQueries(['match']);
-            queryClient.invalidateQueries(['matchedDog']);
           }}
           className={cn(
             'absolute bottom-2 right-2 h-8 w-8 cursor-pointer text-pink-500 transition duration-200 hover:scale-105 hover:text-pink-600 active:fill-pink-600',

@@ -1,20 +1,14 @@
+import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useRouter } from '@tanstack/react-router';
 import noMatch from '~/assets/no-match.png';
 import { Heart, SlidersHorizontal } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import {
-  ArrayParam,
-  NumberParam,
-  StringParam,
-  useQueryParams,
-  withDefault,
-} from 'use-query-params';
 import { z } from 'zod';
 
 import { fetchApi } from '~/lib/fetch-client';
-import { useShouldBeAuthed } from '~/lib/useShouldBeAuthed';
+import { searchRoute } from '~/lib/router';
 import { Button } from '~/components/ui/button';
 import {
   Form,
@@ -49,24 +43,17 @@ import { DogProfile } from '~/components/dog-profile';
 import { Layout } from '~/components/layout';
 
 const searchSchema = z.object({
-  breeds: z.array(z.string().nullable()).nullable(),
+  breeds: z.array(z.string()).optional(),
   sort: z.string().optional(),
-  minAge: z.array(z.number()).optional(),
-  maxAge: z.array(z.number()).optional(),
+  ageMin: z.array(z.number()).optional(),
+  ageMax: z.array(z.number()).optional(),
 });
 
 export function Search() {
   document.title = 'Search | Woofinder';
-  useShouldBeAuthed(true);
-
+  const router = useRouter();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useQueryParams({
-    breeds: withDefault(ArrayParam, [] as string[]),
-    sort: withDefault(StringParam, 'breed:asc'),
-    maxAge: withDefault(NumberParam, undefined),
-    minAge: withDefault(NumberParam, undefined),
-    from: withDefault(StringParam, undefined),
-  });
+  const searchParams = searchRoute.useSearch();
 
   const { data: breeds, isLoading } = useQuery({
     queryKey: ['dogBreeds'],
@@ -78,14 +65,7 @@ export function Search() {
     staleTime: 60 * 1000,
     queryFn: () =>
       fetchApi.searchDogs({
-        queries: {
-          size: 24,
-          sort: searchParams.sort,
-          breeds: searchParams.breeds as string[] | undefined,
-          ageMax: searchParams.maxAge,
-          ageMin: searchParams.minAge,
-          from: searchParams.from,
-        },
+        queries: { size: 24, sort: 'breed:asc', ...searchParams },
       }),
   });
 
@@ -93,36 +73,35 @@ export function Search() {
     queryKey: ['dogs', dogIds],
     queryFn: () => fetchApi.getDogs(dogIds?.resultIds ?? []),
     enabled: !!dogIds?.resultIds,
-    keepPreviousData: true,
+    placeholderData: (prev) => prev,
   });
 
   const { data: dogLocations } = useQuery({
     queryKey: ['dogLocations', dogs],
     queryFn: () => fetchApi.getLocations(dogs ? dogs.map((x) => x.zip_code) : []),
     enabled: !!dogs,
-    onSuccess: () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    },
   });
+
+  useEffect(() => {
+    if (dogs && dogs.length > 0) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [dogs]);
 
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
-      minAge: searchParams.minAge ? [searchParams.minAge] : [0],
-      maxAge: searchParams.maxAge ? [searchParams.maxAge] : [20],
+      ageMin: [searchParams.ageMin ?? 0],
+      ageMax: [searchParams.ageMax ?? 20],
       sort: searchParams.sort,
       breeds: searchParams.breeds,
     },
   });
 
   async function onSubmit(values: z.infer<typeof searchSchema>) {
-    setSearchParams({
-      breeds: values.breeds ?? [],
-      maxAge: values.maxAge ? values.maxAge[0] : undefined,
-      minAge: values.minAge ? values.minAge[0] : undefined,
-      sort: values.sort,
-      from: undefined,
-    });
+    const { ageMax, ageMin, ...rest } = values;
+    const search = { ...rest, ageMin: ageMin ? ageMin[0] : 0, ageMax: ageMax ? ageMax[0] : 20 };
+    navigate({ to: '/search', search: (prev) => ({ ...prev, ...search }) });
   }
 
   const nextFrom = dogIds?.next?.split('&').filter((x) => x.startsWith('from'));
@@ -199,17 +178,17 @@ export function Search() {
                   />
                   <FormField
                     control={form.control}
-                    name="maxAge"
+                    name="ageMax"
                     render={({ field }) => (
                       <div className="grid gap-4">
                         <div className="flex items-center justify-between">
-                          <Label htmlFor="maxAge">Max Age</Label>
+                          <Label htmlFor="ageMax">Max Age</Label>
                           <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
                             {field.value}
                           </span>
                         </div>
                         <Slider
-                          id="maxAge"
+                          id="ageMax"
                           max={20}
                           min={0}
                           defaultValue={field.value ?? [20]}
@@ -223,17 +202,17 @@ export function Search() {
                   />
                   <FormField
                     control={form.control}
-                    name="minAge"
+                    name="ageMin"
                     render={({ field }) => (
                       <div className="grid gap-4">
                         <div className="flex items-center justify-between">
-                          <Label htmlFor="minAge">Min Age</Label>
+                          <Label htmlFor="ageMin">Min Age</Label>
                           <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
                             {field.value}
                           </span>
                         </div>
                         <Slider
-                          id="minAge"
+                          id="ageMin"
                           max={20}
                           min={0}
                           defaultValue={field.value ?? [0]}
@@ -260,7 +239,12 @@ export function Search() {
           variant="outline"
           size="sm"
           className="h-8 transition duration-200 hover:border-pink-600 hover:bg-pink-600/10 hover:text-pink-600  lg:flex"
-          onClick={() => navigate('/match')}
+          onClick={() =>
+            navigate({
+              to: '/match',
+              search: () => ({ redirect: router.latestLocation.href }),
+            })
+          }
         >
           <Heart className="mr-2 h-4 w-4" />
           Find Match
@@ -301,7 +285,10 @@ export function Search() {
             onClick={() => {
               const prevFrom = dogIds?.prev?.split('&').filter((x) => x.startsWith('from'));
               if (prevFrom?.length === 1) {
-                setSearchParams({ from: prevFrom?.[0].split('=')[1] });
+                navigate({
+                  to: '/search',
+                  search: (prev) => ({ ...prev, from: prevFrom?.[0].split('=')[1] }),
+                });
               }
             }}
             disabled={dogIds?.prev === undefined}
@@ -312,7 +299,10 @@ export function Search() {
             variant="outline"
             onClick={() => {
               if (nextFrom?.length === 1) {
-                setSearchParams({ from: nextFrom?.[0].split('=')[1] });
+                navigate({
+                  to: '/search',
+                  search: (prev) => ({ ...prev, from: nextFrom?.[0].split('=')[1] }),
+                });
               }
             }}
             disabled={

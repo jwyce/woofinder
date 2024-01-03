@@ -11,9 +11,13 @@
 - **Tailwind + shadcn** - Tailwind allows me to rapidly iterate on designs in code and is a great
   abstraction over CSS. Leveraging [shadcn](https://ui.shadcn.com/) components also gives a good
   starting point for creating a design system.
-- **React Router** - Currently the best way to manage client side routing so links can be shared and
-  saved. I considered trying [Tanstack Router](https://tanstack.com/router/v1), but since it's still
-  in beta, I decided against it.
+- **Tanstack Router** - The [best routing solution](https://tanstack.com/router/v1) for React SPAs
+  out there. Has type-safe routes, path params, and search paramas and fully handles param
+  serialization. Also has automatic route preloading, works with SSR, can be used as a file based
+  router, and so much more!
+- ~~**React Router** - Currently the best way to manage client side routing so links can be shared
+  and saved. I considered trying [Tanstack Router](https://tanstack.com/router/v1), but since it's
+  still in beta, I decided against it.~~
 - **React Query** - Solution for managing local state, caching, and invalidation between client and
   API.
 - **Zustand** - So I can manage global application state. Redux would be overkill for this project
@@ -31,7 +35,7 @@
   where cookies will not be used in a request (even HTTPOnly) if the request is to a different
   domain. One way around this would be to change our auth flow (not currently in my control) or to
   allow tracking from your device's settings.
-- **Note on persisting global state** - Essentially, I wanted to have some level of persistance when
+- **Note on persisting global state** - Essentially, I wanted to have some level of persistence when
   a user is signed in so if they refresh, close the tab, internet turns off, or for any other number
   of reasons, application state is preserved. I chose to synchronize the global state store with
   localStorage to achieve this effect. If I had my own server or another service, I think a better

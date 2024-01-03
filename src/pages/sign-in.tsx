@@ -1,12 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { fetchApi } from '~/lib/fetch-client';
 import { randomAvatar } from '~/lib/randomAvatar';
 import { useWoofinderStore } from '~/lib/store';
-import { useShouldBeAuthed } from '~/lib/useShouldBeAuthed';
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -31,9 +30,8 @@ import logo from '/woofinder.png';
 
 export function SignIn() {
   document.title = 'Woofinder';
-  useShouldBeAuthed(false);
   const setUser = useWoofinderStore((state) => state.setUser);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const loginSchema = z.object({
     name: z.string({ required_error: 'Name is required' }),
@@ -49,8 +47,10 @@ export function SignIn() {
     const avatar = await randomAvatar();
 
     if (res === 'OK') {
-      setUser({ ...values, avatar });
-      navigate('/search');
+      const user = { ...values, avatar };
+      setUser(user);
+      router.update({ context: { user } });
+      router.navigate({ to: '/search' });
     }
   }
 

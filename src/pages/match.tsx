@@ -1,24 +1,24 @@
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
 import matchFound from '~/assets/match-found.png';
 import noMatch from '~/assets/no-match.png';
 import confetti from 'canvas-confetti';
 import { Heart } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 import { fetchApi } from '~/lib/fetch-client';
+import { matchRoute } from '~/lib/router';
 import { useWoofinderStore } from '~/lib/store';
-import { useShouldBeAuthed } from '~/lib/useShouldBeAuthed';
 import { Button } from '~/components/ui/button';
 import { Loader } from '~/components/ui/loader';
 import { DogProfile } from '~/components/dog-profile';
 import { Layout } from '~/components/layout';
 
 export function Match() {
-  useShouldBeAuthed(true);
   document.title = 'Match | Woofinder';
   const favorites = useWoofinderStore((s) => s.favorites);
-  const navigate = useNavigate();
+  const router = useRouter();
+  const { redirect } = matchRoute.useSearch();
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['match', favorites],
@@ -54,7 +54,13 @@ export function Match() {
           <p className="text-center text-sm text-muted-foreground">
             You haven't favorited any dogs yet! Find a few you like and come back.
           </p>
-          <Button onClick={() => navigate('/search')}>Search dogs</Button>
+          <Button
+            onClick={() =>
+              redirect ? router.history.push(redirect) : router.navigate({ to: '/search' })
+            }
+          >
+            Search dogs
+          </Button>
         </div>
       </Layout>
     );
@@ -86,7 +92,13 @@ export function Match() {
             <Heart className="mr-2 h-4 w-4" />
             Match Again
           </Button>
-          <Button onClick={() => navigate('/search')}>Search dogs</Button>
+          <Button
+            onClick={() =>
+              redirect ? router.history.push(redirect) : router.navigate({ to: '/search' })
+            }
+          >
+            Search dogs
+          </Button>
         </div>
       </div>
     </Layout>

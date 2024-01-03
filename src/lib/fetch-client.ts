@@ -64,49 +64,60 @@ const getDogBreeds = makeEndpoint({
   description: 'Returns an array of all possible breed names.',
 });
 
+export const dogSearchSchema = z.object({
+  breeds: z.array(z.string()).optional(),
+  zipCodes: z.array(z.string()).optional(),
+  ageMin: z.number().optional(),
+  ageMax: z.number().optional(),
+  size: z.number().optional(),
+  from: z.string().optional(),
+  sort: z.string().optional(),
+});
+export type DogSearch = z.infer<typeof dogSearchSchema>;
+
 const dogSearchParams = makeParameters([
   {
     name: 'breeds',
     description: 'an array of breeds',
     type: 'Query',
-    schema: z.array(z.string()).optional(),
+    schema: dogSearchSchema.shape.breeds,
   },
   {
     name: 'zipCodes',
     description: 'an array of zip codes',
     type: 'Query',
-    schema: z.array(z.string()).optional(),
+    schema: dogSearchSchema.shape.zipCodes,
   },
   {
     name: 'ageMin',
     description: 'a minimum age',
     type: 'Query',
-    schema: z.number().optional(),
+    schema: dogSearchSchema.shape.ageMin,
   },
   {
     name: 'ageMax',
     description: 'a maximum age',
     type: 'Query',
-    schema: z.number().optional(),
+    schema: dogSearchSchema.shape.ageMax,
   },
   {
     name: 'size',
     description: 'the number of results to return; defaults to 25 if omitted',
     type: 'Query',
-    schema: z.number().optional(),
+    schema: dogSearchSchema.shape.size,
   },
   {
     name: 'from',
     description: 'a cursor to be used when paginating results (optional)',
     type: 'Query',
-    schema: z.string().optional(),
+    schema: dogSearchSchema.shape.from,
   },
   {
     name: 'sort',
     description:
       'the field by which to sort results, and the direction of the sort; in the format sort=field:[asc|desc]',
     type: 'Query',
-    schema: z.string().optional(),
+    schema: dogSearchSchema.shape.sort,
   },
 ]);
 

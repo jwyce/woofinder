@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type User = {
+export type User = {
   name: string;
   email: string;
   avatar: string;

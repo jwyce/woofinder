@@ -16,7 +16,7 @@ type SelectOption = {
 };
 
 type Props = {
-  fieldValue?: (string | null)[];
+  fieldValue?: string[];
   options: SelectOption[];
   placeholder?: string;
   className?: string;

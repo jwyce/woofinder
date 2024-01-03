@@ -1,5 +1,5 @@
+import { useNavigate } from '@tanstack/react-router';
 import notfound from '~/assets/404.png';
-import { useNavigate } from 'react-router-dom';
 
 import { Button } from '~/components/ui/button';
 import { Layout } from '~/components/layout';
@@ -17,7 +17,7 @@ export function NotFound() {
           <div className="text-8xl font-extrabold md:text-[10rem]">4</div>
         </div>
         <p className="text-sm text-muted-foreground">The requested page was not found!</p>
-        <Button onClick={() => navigate('/search')}>Search dogs</Button>
+        <Button onClick={() => navigate({ to: '/search' })}>Search dogs</Button>
       </div>
     </Layout>
   );
