@@ -44,7 +44,7 @@ export function SignIn() {
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     const res = await fetchApi.login(values);
-    const avatar = await randomAvatar();
+    const avatar = await randomAvatar(values.name);
 
     if (res === 'OK') {
       const user = { ...values, avatar };

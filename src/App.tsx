@@ -1,12 +1,23 @@
+import React, { Suspense } from 'react';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Outlet, useRouter } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { AxiosError } from 'axios';
 import { toast, Toaster } from 'sonner';
 
 import { ThemeProvider } from './components/theme-provider';
+import { Loader } from './components/ui/loader';
 import { useWoofinderStore } from './lib/store';
+
+const TanStackRouterDevtools =
+  process.env.NODE_ENV === 'production'
+    ? () => null // Render nothing in production
+    : React.lazy(() =>
+        // Lazy load in development
+        import('@tanstack/router-devtools').then((res) => ({
+          default: res.TanStackRouterDevtools,
+        })),
+      );
 
 export function App() {
   const setUser = useWoofinderStore((state) => state.setUser);
@@ -40,7 +51,9 @@ export function App() {
         <Outlet />
         <Toaster richColors />
         <ReactQueryDevtools initialIsOpen={false} />
-        <TanStackRouterDevtools initialIsOpen={false} />
+        <Suspense fallback={<Loader />}>
+          <TanStackRouterDevtools initialIsOpen={false} />
+        </Suspense>
       </QueryClientProvider>
     </ThemeProvider>
   );

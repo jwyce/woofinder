@@ -1,40 +1,19 @@
-import * as jose from 'jose';
+export const randomAvatar = async (name: string) => {
+  const [firstName, lastName] = name.toLowerCase().split(' ');
+  const first = firstName[0];
+  const last = lastName ?? '';
+  const svg = await fetch(
+    `https://avatar-omega.vercel.app/${first}${last}.svg?text=${first.toUpperCase()}${
+      last.toUpperCase()[0] ?? ''
+    }`,
+  ).then((res) => res.text());
 
-const AvatarStyleCount = {
-  face: 15,
-  nose: 13,
-  mouth: 19,
-  eyes: 13,
-  eyebrows: 15,
-  glasses: 14,
-  hair: 58,
-  accessories: 14,
-  details: 13,
-  beard: 16,
+  // 📣 Shout out to https://avatar.vercel.sh/
+  return svg;
 };
-export const randomAvatar = async () => {
-  const config = Object.keys(AvatarStyleCount).reduce(
-    (prev, next) =>
-      Object.assign(prev, {
-        [next]: Math.floor(
-          Math.random() * (AvatarStyleCount[next as keyof typeof AvatarStyleCount] + 1),
-        ),
-      }),
-    {} as Record<keyof typeof AvatarStyleCount, number>,
-  );
-  // for harmony
-  config.beard = 0;
-  config.details = 0;
-  config.accessories = 0;
 
-  const secret = new TextEncoder().encode(
-    'cc7e0d44fd473002f1c42167459001140ec6389b7353f8088f4d9a95f2f596f2',
-  );
-  const encoded: string = await new jose.SignJWT(config)
-    .setProtectedHeader({ alg: 'HS256' })
-    .sign(secret);
-
-  // 📣 Shout out to https://github.com/mayandev/notion-avatar
-  const imgSrc = `https://notion-avatar.vercel.app/api/img/${encoded.split('.')[1]}`;
-  return imgSrc;
+export const svgToImageURL = (svg?: string) => {
+  if (!svg) return undefined;
+  const blob = new Blob([svg], { type: 'image/svg+xml' });
+  return URL.createObjectURL(blob);
 };

@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
 
 import { fetchApi } from '~/lib/fetch-client';
+import { svgToImageURL } from '~/lib/randomAvatar';
 import { useWoofinderStore } from '~/lib/store';
 
 import { ThemeToggle } from './theme-toggle';
@@ -21,6 +23,7 @@ export function Header() {
   const setUser = useWoofinderStore((state) => state.setUser);
   const clearFavorites = useWoofinderStore((state) => state.clearFavorites);
   const logout = useMutation({ mutationFn: fetchApi.logout });
+  const router = useRouter();
 
   const [first, last] = user?.name ? user.name.split(' ') : ['M', 'E'];
 
@@ -37,7 +40,7 @@ export function Header() {
             <DropdownMenu>
               <DropdownMenuTrigger name="profile">
                 <Avatar>
-                  <AvatarImage src={user.avatar} alt="avatar" />
+                  <AvatarImage src={svgToImageURL(user.avatar)} alt="avatar" />
                   <AvatarFallback className="uppercase">
                     {first[0]}
                     {last ? last[0] : null}
@@ -58,6 +61,8 @@ export function Header() {
                     if (res === 'OK') {
                       setUser(undefined);
                       clearFavorites();
+                      router.update({ context: { user: undefined } });
+                      router.navigate({ to: '/' });
                     }
                   }}
                 >

@@ -45,8 +45,7 @@
 
 - **Google's Emoji Kitchen** - [emoji-kitchen](https://github.com/xsalazar/emoji-kitchen) for site
   assets
-- **Notion Avatar** - [notion-avatar](https://github.com/mayandev/notion-avatar) for random user
-  avatar image
+- **Vercel Avatar** - [vercel-avatar](https://github.com/vercel/avatar) for random user avatar image
 
 ## Running locally
 
